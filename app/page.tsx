@@ -12,23 +12,23 @@ export default function Home() {
   const [error, setError] = useState<boolean>(false);
   // going to be whatever the user type is from the prisma example const [users, setUsers] = useState<User[] | null>(null);
 
-  async function submitGet(e: React.FormEvent) {
-    e.preventDefault();
-  
-    // send empty body/header, simple get request no auth necessary
-    const res = await fetch("/api/get", {
-      method: "GET"
-    });
-
-    if (res.ok) {
-      setMessage("✅ Data received!");
-      // then set users to the users fetch using prisma
-      setError(false);
-    } else {
-      setMessage("❌ Error fetching data.");
-      setError(true);
-    }
-  }
+  // async function submitGet(e: React.FormEvent) {
+  //   e.preventDefault();
+  //
+  //   // send empty body/header, simple get request no auth necessary
+  //   const res = await fetch("/api/get", {
+  //     method: "GET"
+  //   });
+  //
+  //   if (res.ok) {
+  //     setMessage("✅ Data received!");
+  //     // then set users to the users fetch using prisma
+  //     setError(false);
+  //   } else {
+  //     setMessage("❌ Error fetching data.");
+  //     setError(true);
+  //   }
+  // }
   
   async function submitPost(e: React.FormEvent) {
     e.preventDefault();
@@ -107,22 +107,23 @@ export default function Home() {
           </button>
         </form>
       </div>
-      <div className="border-t mt-6">
-        <h1
-          className={`${error ? "bg-red-800" : "bg-green-800"} h-10px text-center`}
-        >
-          {message}
-        </h1>
-        <form
-          onSubmit={submitGet}
-          className="flex flex-col [&>input]:w-1/2 items-center gap-4 pt-4"
-        >
-          <h1>Click the button below to get all users who have submitted themselves to the form!</h1>
-          <button type="submit" className="p-2 border rounded">
-            Get Users
-          </button>
-        </form>
-      </div>{" "}
+
+      {/* <div className="border-t mt-6"> */}
+      {/*   <h1 */}
+      {/*     className={`${error ? "bg-red-800" : "bg-green-800"} h-10px text-center`} */}
+      {/*   > */}
+      {/*     {message} */}
+      {/*   </h1> */}
+      {/*   <form */}
+      {/*     onSubmit={submitGet} */}
+      {/*     className="flex flex-col [&>input]:w-1/2 items-center gap-4 pt-4" */}
+      {/*   > */}
+      {/*     <h1>Click the button below to get all users who have submitted themselves to the form!</h1> */}
+      {/*     <button type="submit" className="p-2 border rounded"> */}
+      {/*       Get Users */}
+      {/*     </button> */}
+      {/*   </form> */}
+      {/* </div>{" "} */}
     </div>
   );
 }
