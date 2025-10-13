@@ -1,19 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "../../../generated/prisma";
+import { prisma } from "@/prisma/client"
 
 export async function POST(req: NextRequest) {
   try {
-    const prisma = new PrismaClient();
     const data = await req.json();
-    const { name, username, email } = data;
+    const { idea } = data;
 
-    console.log(
-      `Received the following information from user:\nname: ${name}\nusername: ${username}\nemail: ${email}`,
-    );
-
-    await prisma.$disconnect();
-
-
+    const post = await prisma.post.create({
+      data: {
+        content: idea,
+      },
+    });
 
     return NextResponse.json({ success: true, message: "Form received!" });
   } catch (error) {

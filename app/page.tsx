@@ -2,128 +2,65 @@
 
 import { useState } from "react";
 
-import Link from "next/link";
-
 export default function Home() {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
-  // going to be whatever the user type is from the prisma example const [users, setUsers] = useState<User[] | null>(null);
+  const [idea, setIdea] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
-  // async function submitGet(e: React.FormEvent) {
-  //   e.preventDefault();
-  //
-  //   // send empty body/header, simple get request no auth necessary
-  //   const res = await fetch("/api/get", {
-  //     method: "GET"
-  //   });
-  //
-  //   if (res.ok) {
-  //     setMessage("✅ Data received!");
-  //     // then set users to the users fetch using prisma
-  //     setError(false);
-  //   } else {
-  //     setMessage("❌ Error fetching data.");
-  //     setError(true);
-  //   }
-  // }
-  
-  async function submitPost(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const res = await fetch("/api/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, username, email }),
-    });
-
-    if (res.ok) {
-      setMessage("✅ Form submitted successfully!");
-      setName("");
-      setUsername("");
-      setEmail("");
-      setError(false);
-    } else {
-      setMessage("❌ Error submitting form.");
-      setError(true);
+    try {
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idea }),
+      });
+      if (response.ok) {
+        setSubmitted(true);
+        setIdea("");
+        setError(false);
+      } else {
+        console.error("Failed to submit idea");
+        setError(true);
+      }
+    } catch (error) {
+      console.error("An error occurred while submitting the idea", error);
     }
-  }
+  };
 
   return (
-    <div className="flex flex-col justify-center text-3xl p-6 gap-4">
-      <div className="flex justify-center">
-        <h1>Hello World!</h1>
-      </div>
-      <div className="flex text-center flex-col gap-2">
-        <h1>This is my new VPS that I am setting up!</h1>
-        <h1>Check out some of my other websites!</h1>
-        <Link href="https://www.docuquery.online/">
-          <u>docuquery.online</u>
-        </Link>
-        <Link href="https://www.christophermeyer.dev/">
-          <u>christophermeyer.dev</u>
-        </Link>
-        <Link href="https://www.playskillsphere.com/">
-          <u>playskillsphere.com</u>
-        </Link>
-        <h1>just adding a useless change so i can test deploy on vps</h1>
-      </div>
-      <div className="border-t mt-6">
-        <h1
-          className={`${error ? "bg-red-800" : "bg-green-800"} h-10px text-center`}
-        >
-          {message}
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background p-8">
+      <div className="w-full max-w-2xl text-center">
+        <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-4">
+          Got an Idea?
         </h1>
-        <form
-          onSubmit={submitPost}
-          className="flex flex-col [&>input]:w-1/2 items-center gap-4 pt-4"
-        >
-          <h1>Put your name here!</h1>
-          <input
-            type="text"
-            placeholder="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="p-2 border rounded"
+        <p className="text-lg md:text-xl text-foreground/80 mb-8">
+          Upload software ideas that you wish existed here!
+        </p>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <textarea
+            value={idea}
+            onChange={(e) => setIdea(e.target.value)}
+            className="w-full p-4 rounded-lg border border-foreground/20 bg-background/80 text-foreground focus:outline-none focus:ring-2 focus:ring-sky-500"
+            placeholder="Describe your brilliant idea..."
+            rows={6}
+            required
           />
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="p-2 border rounded"
-          />
-          <button type="submit" className="p-2 border rounded">
-            Submit
+          <button
+            type="submit"
+            className="w-full bg-sky-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-sky-700 transition-colors duration-300"
+          >
+            Submit Idea
           </button>
         </form>
+        {submitted && !error ? (
+          <p className="mt-4 text-green-500">Thank you for your submission!</p>
+        ) : submitted && (
+          <p className="mt-4 text-red-500">Oops! We ran into an error submitting your idea! Please try again later.</p>
+        )}
       </div>
-
-      {/* <div className="border-t mt-6"> */}
-      {/*   <h1 */}
-      {/*     className={`${error ? "bg-red-800" : "bg-green-800"} h-10px text-center`} */}
-      {/*   > */}
-      {/*     {message} */}
-      {/*   </h1> */}
-      {/*   <form */}
-      {/*     onSubmit={submitGet} */}
-      {/*     className="flex flex-col [&>input]:w-1/2 items-center gap-4 pt-4" */}
-      {/*   > */}
-      {/*     <h1>Click the button below to get all users who have submitted themselves to the form!</h1> */}
-      {/*     <button type="submit" className="p-2 border rounded"> */}
-      {/*       Get Users */}
-      {/*     </button> */}
-      {/*   </form> */}
-      {/* </div>{" "} */}
-    </div>
+    </main>
   );
 }
