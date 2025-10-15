@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
         content: idea,
       },
     });
+    throw new Error("hi");
 
     return NextResponse.json({ success: true, message: "Form received!" });
   } catch (error) {
