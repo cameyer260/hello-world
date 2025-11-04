@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+//hi
 
 export default function Home() {
   const [idea, setIdea] = useState("");
