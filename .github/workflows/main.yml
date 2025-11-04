@@ -27,13 +27,13 @@ jobs:
         uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.HOST }}
-          username: linuxserver.io
+          username: root
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ~/apps/${{ secrets.directory_name }}
+            cd ~/apps/${{ secrets.NAME }}
             git pull origin main
             npm run ci
             npm run build
-            pm2 restart ${{ secrets.directory_name }}
+            pm2 restart ${{ secrets.NAME }}
         
