@@ -34,7 +34,7 @@ jobs:
           script: |
             cd ~/apps/${{ secrets.NAME }}
             git pull origin main
-            npm run ci
+            npm ci
             npm run build
             pm2 restart ${{ secrets.NAME }}
         
